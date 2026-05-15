@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ===== AUTH FUNCTIONS =====
-function handleLogin(e) {
+async function handleLogin(e) {
   e.preventDefault();
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
@@ -52,19 +52,33 @@ function handleLogin(e) {
   button.textContent = '⏳ Проверяю...';
   button.disabled = true;
 
-  // Проверка локально
-  if (username === ADMIN_USER && password === ADMIN_PASS) {
-    authToken = 'local-token-' + Date.now();
-    currentUser = username;
-    localStorage.setItem('authToken', authToken);
-    localStorage.setItem('currentUser', currentUser);
-    loginError.style.display = 'none';
-    button.textContent = originalText;
-    button.disabled = false;
-    showAdminPanel();
-    loadPosts();
-  } else {
-    loginError.textContent = '❌ Неверное имя пользователя или пароль';
+  try {
+    const response = await fetch(`${API_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      authToken = data.token;
+      currentUser = data.username;
+      localStorage.setItem('authToken', authToken);
+      localStorage.setItem('currentUser', currentUser);
+      loginError.style.display = 'none';
+      button.textContent = originalText;
+      button.disabled = false;
+      showAdminPanel();
+      loadPosts();
+    } else {
+      loginError.textContent = '❌ ' + (data.message || 'Ошибка логина');
+      loginError.style.display = 'block';
+      button.textContent = originalText;
+      button.disabled = false;
+    }
+  } catch (error) {
+    loginError.textContent = '❌ ' + error.message;
     loginError.style.display = 'block';
     button.textContent = originalText;
     button.disabled = false;
