@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initParallax();
   initForms();
   initActiveNav();
+  initBlogCarousel();
 });
 
 // ===== LANGUAGE SYSTEM =====
@@ -122,6 +123,11 @@ function setLanguage(lang, save) {
 
   // Update html lang attribute
   document.documentElement.lang = lang === 'ua' ? 'uk' : lang;
+
+  // Reload blog carousel with new language
+  if (document.getElementById('carousel-track')) {
+    initBlogCarousel();
+  }
 }
 
 // ===== MOBILE MENU =====
@@ -281,6 +287,7 @@ function initActiveNav() {
     'accounting.html': 'nav-accounting',
     'tax.html': 'nav-tax',
     'about.html': 'nav-about',
+    'blog.html': 'nav-blog',
     'contact.html': 'nav-contacts'
   };
 
@@ -289,6 +296,91 @@ function initActiveNav() {
     const el = document.getElementById(activeId);
     if (el) el.classList.add('active');
   }
+}
+
+// ===== BLOG CAROUSEL =====
+async function initBlogCarousel() {
+  const carouselTrack = document.getElementById('carousel-track');
+  const prevBtn = document.getElementById('carousel-prev');
+  const nextBtn = document.getElementById('carousel-next');
+
+  if (!carouselTrack) return;
+
+  try {
+    // Fetch blog posts
+    const response = await fetch(`${window.location.origin}/api/posts?lang=${currentLang}&published=true`);
+    const data = await response.json();
+
+    if (data.success && data.data && data.data.length > 0) {
+      // Get latest 6 posts
+      const posts = data.data.slice(0, 6);
+
+      // Clear track
+      carouselTrack.innerHTML = '';
+
+      // Add posts to carousel
+      posts.forEach(post => {
+        const date = new Date(post.date).toLocaleDateString(currentLang === 'ru' ? 'ru-RU' : currentLang === 'de' ? 'de-DE' : 'en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+
+        const item = document.createElement('div');
+        item.className = 'blog-carousel-item reveal-scale';
+        item.innerHTML = `
+          ${post.image ? `<img src="${post.image}" alt="${escapeHtml(post.title)}" class="carousel-item-image">` : '<div class="carousel-item-image" style="background: linear-gradient(135deg, #e0e7ff 0%, #f3e8ff 100%);"></div>'}
+          <div class="carousel-item-body">
+            <h3 class="carousel-item-title">${escapeHtml(post.title)}</h3>
+            <div class="carousel-item-description">${escapeHtml(post.description || post.content.substring(0, 100))}</div>
+            <div class="carousel-item-meta">${date}</div>
+            <a href="/blog.html?slug=${post.slug}" class="carousel-item-link">
+              <span data-i18n="blog_read_more">Читать статью</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+            </a>
+          </div>
+        `;
+        carouselTrack.appendChild(item);
+      });
+
+      // Translate carousel items
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (TRANSLATIONS[key] && TRANSLATIONS[key][currentLang]) {
+          el.innerHTML = TRANSLATIONS[key][currentLang];
+        }
+      });
+
+      // Setup carousel navigation
+      if (prevBtn && nextBtn) {
+        const itemWidth = carouselTrack.querySelector('.blog-carousel-item')?.offsetWidth + 24 || 360;
+
+        prevBtn.addEventListener('click', () => {
+          carouselTrack.scrollBy({ left: -itemWidth, behavior: 'smooth' });
+        });
+
+        nextBtn.addEventListener('click', () => {
+          carouselTrack.scrollBy({ left: itemWidth, behavior: 'smooth' });
+        });
+      }
+
+      // Re-trigger reveal animations
+      initScrollAnimations();
+    } else {
+      // No posts found - show message
+      carouselTrack.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-muted);" data-i18n="blog_no_articles">Статьи не найдены</div>`;
+    }
+  } catch (error) {
+    console.error('Error loading blog carousel:', error);
+    carouselTrack.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-muted);">Ошибка загрузки статей</div>`;
+  }
+}
+
+// Helper to escape HTML
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }
 
 // ===== SMOOTH SCROLL for anchors =====

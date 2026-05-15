@@ -21,6 +21,9 @@ const TRANSLATIONS = {
   nav_contacts: {
     de: 'Kontakt', fr: 'Contact', en: 'Contact', ru: 'Контакты', ua: 'Контакти'
   },
+  nav_blog: {
+    de: 'Blog', fr: 'Blog', en: 'Blog', ru: 'Блог', ua: 'Блог'
+  },
   nav_cta: {
     de: 'Anfrage', fr: 'Demande', en: 'Request', ru: 'Заявка', ua: 'Заявка'
   },
@@ -486,6 +489,47 @@ const TRANSLATIONS = {
   },
   about_values_title: {
     de: 'Unsere Werte', fr: 'Nos valeurs', en: 'Our Values', ru: 'Наши ценности', ua: 'Наші цінності'
+  },
+
+  // ===== BLOG SECTION =====
+  blog_label: {
+    de: 'Aktuelles', fr: 'Actualités', en: 'Latest News', ru: 'Блог', ua: 'Блог'
+  },
+  blog_title: {
+    de: 'Wertvolle Tipps und Insights', fr: 'Conseils et idées précieux', en: 'Valuable Tips and Insights', ru: 'Полезные советы и инсайты', ua: 'Корисні поради та інсайти'
+  },
+  blog_subtitle: {
+    de: 'Erfahren Sie mehr über Firmengründung, Steuerfragen und Geschäftsführung in der Schweiz',
+    fr: 'Découvrez comment créer une entreprise, gérer les impôts et diriger votre entreprise en Suisse',
+    en: 'Learn about company formation, tax strategy, and business management in Switzerland',
+    ru: 'Узнайте о регистрации компании, налоговой стратегии и управлении бизнесом в Швейцарии',
+    ua: 'Дізнайтеся про реєстрацію компанії, податкову стратегію та управління бізнесом у Швейцарії'
+  },
+  blog_read_more: {
+    de: 'Artikel lesen', fr: 'Lire l\'article', en: 'Read Article', ru: 'Читать статью', ua: 'Читати статтю'
+  },
+  blog_view_all: {
+    de: 'Alle Artikel anzeigen', fr: 'Voir tous les articles', en: 'View All Articles', ru: 'Смотреть все статьи', ua: 'Переглянути всі статті'
+  },
+  blog_no_articles: {
+    de: 'Keine Artikel gefunden', fr: 'Aucun article trouvé', en: 'No articles found', ru: 'Статьи не найдены', ua: 'Статті не знайдені'
+  },
+
+  // ===== BLOG PAGE =====
+  blog_hero_title: {
+    de: 'Unser Blog', fr: 'Notre blog', en: 'Our Blog', ru: 'Наш блог', ua: 'Наш блог'
+  },
+  blog_hero_text: {
+    de: 'Informationen und praktische Tipps für Ihr Geschäft in der Schweiz',
+    fr: 'Informations et conseils pratiques pour votre entreprise en Suisse',
+    en: 'Information and practical tips for your business in Switzerland',
+    ru: 'Информация и практические советы для вашего бизнеса в Швейцарии',
+    ua: 'Інформація та практичні поради для вашого бізнесу у Швейцарії'
+  },
+
+  // ===== FOOTER ADDITIONS =====
+  footer_blog: {
+    de: 'Blog', fr: 'Blog', en: 'Blog', ru: 'Блог', ua: 'Блог'
   },
 
   // ===== CONTACT PAGE =====
