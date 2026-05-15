@@ -12,9 +12,7 @@ const ADMIN_USER = 'admin';
 const ADMIN_PASS = 'admin123';
 
 // API URL - автоматически определяется для локальной разработки и продакшена
-const API_URL = window.location.origin === 'http://localhost:8080' || window.location.origin === 'http://localhost:3000'
-  ? '/api'
-  : window.location.origin + '/api';
+const API_URL = '/api';
 
 // ===== ИНИЦИАЛИЗАЦИЯ =====
 document.addEventListener('DOMContentLoaded', () => {
