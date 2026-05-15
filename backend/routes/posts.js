@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const auth = require('../middleware/auth');
+const { exportPostsToJson } = require('../utils/exportPosts');
 
 const router = express.Router();
 const POSTS_DIR = path.join(__dirname, '../data/posts');
@@ -118,9 +119,7 @@ router.post('/', auth, async (req, res) => {
     const filepath = path.join(POSTS_DIR, filename);
 
     fs.writeFileSync(filepath, JSON.stringify(post, null, 2));
-
-    // Запускаем автоперевод (асинхронно)
-    translatePost(post, slug);
+    exportPostsToJson(); // Обновляем posts-data.json
 
     res.status(201).json({
       success: true,
@@ -161,6 +160,7 @@ router.put('/:slug', auth, (req, res) => {
     if (published !== undefined) post.published = published;
 
     fs.writeFileSync(filepath, JSON.stringify(post, null, 2));
+    exportPostsToJson(); // Обновляем posts-data.json
 
     res.json({
       success: true,
@@ -193,6 +193,8 @@ router.delete('/:slug', auth, (req, res) => {
       fs.unlinkSync(path.join(POSTS_DIR, file));
     });
 
+    exportPostsToJson(); // Обновляем posts-data.json
+
     res.json({
       success: true,
       message: `Удалено ${files.length} версий поста`
@@ -204,49 +206,5 @@ router.delete('/:slug', auth, (req, res) => {
     });
   }
 });
-
-/**
- * Функция автоперевода (асинхронно)
- */
-function translatePost(post, slug) {
-  const translateAPI = 'https://api.mymemory.translated.net/get';
-
-  const langs = {
-    'ru': ['en', 'de'],
-    'en': ['ru', 'de'],
-    'de': ['ru', 'en']
-  };
-
-  if (!langs[post.lang]) return;
-
-  langs[post.lang].forEach(targetLang => {
-    setTimeout(() => {
-      try {
-        const url = `${translateAPI}?q=${encodeURIComponent(post.title)}&langpair=${post.lang}|${targetLang}`;
-
-        fetch(url)
-          .then(res => res.json())
-          .then(data => {
-            if (data.responseData && data.responseData.translatedText) {
-              const translated = {
-                ...post,
-                lang: targetLang,
-                title: data.responseData.translatedText
-              };
-
-              const filename = `${slug}.${targetLang}.json`;
-              const filepath = path.join(POSTS_DIR, filename);
-              fs.writeFileSync(filepath, JSON.stringify(translated, null, 2));
-
-              console.log(`✓ Пост переведен на ${targetLang.toUpperCase()}`);
-            }
-          })
-          .catch(err => console.error(`Ошибка перевода: ${err.message}`));
-      } catch (error) {
-        console.error(`Ошибка при переводе: ${error.message}`);
-      }
-    }, 500 * Object.keys(langs[post.lang]).indexOf(targetLang));
-  });
-}
 
 module.exports = router;

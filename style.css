@@ -2155,7 +2155,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .blog-card-content {
-  padding: 24px;
+  padding: 56px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card-body {
+  padding: 56px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -2165,8 +2172,8 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 20px;
   font-weight: 600;
   color: var(--text-heading);
-  margin-bottom: 12px;
-  line-height: 1.4;
+  margin-bottom: 16px;
+  line-height: 1.5;
 }
 
 .blog-card h3 a {
@@ -2188,8 +2195,8 @@ h1, h2, h3, h4, h5, h6 {
 .blog-excerpt {
   font-size: 14px;
   color: var(--text-body);
-  line-height: 1.6;
-  margin-bottom: 16px;
+  line-height: 1.8;
+  margin-bottom: 20px;
   flex: 1;
 }
 
@@ -2220,8 +2227,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .blog-carousel {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   margin: 48px 0;
+  padding: 0 80px;
 }
 
 .carousel-track {
@@ -2261,7 +2269,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .carousel-item-body {
-  padding: 20px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
   height: 220px;
@@ -2348,11 +2356,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .carousel-prev {
-  left: 12px;
+  left: -60px;
 }
 
 .carousel-next {
-  right: 12px;
+  right: -60px;
 }
 
 .carousel-nav svg {
@@ -2366,26 +2374,43 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 1024px) {
+  .blog-carousel {
+    padding: 0 60px;
+  }
+
   .blog-carousel-item {
     flex: 0 0 calc(50% - 12px);
   }
 
   .carousel-prev {
-    left: 0;
+    left: -50px;
   }
 
   .carousel-next {
-    right: 0;
+    right: -50px;
   }
 }
 
 @media (max-width: 768px) {
+  .blog-carousel {
+    padding: 0 50px;
+  }
+
   .blog-carousel-item {
     flex: 0 0 calc(100% - 0px);
   }
 
   .carousel-item-body {
     height: auto;
+    padding: 24px;
+  }
+
+  .carousel-prev {
+    left: -40px;
+  }
+
+  .carousel-next {
+    right: -40px;
   }
 
   .blog-carousel-section {

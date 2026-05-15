@@ -61,7 +61,10 @@
             <h1>✍️ Админ Панель</h1>
             <p class="user-info">👤 <span id="current-user">admin</span></p>
           </div>
-          <button id="logout-btn" class="btn btn-outline">Выход</button>
+          <div style="display: flex; gap: 8px;">
+            <button id="download-btn" class="btn btn-secondary" onclick="downloadPostsJSON()">⬇️ Скачать JSON</button>
+            <button id="logout-btn" class="btn btn-outline">Выход</button>
+          </div>
         </div>
       </header>
 
@@ -75,7 +78,6 @@
               <option value="en">🇬🇧 English</option>
               <option value="de">🇩🇪 Deutsch</option>
             </select>
-            <small>Выбери язык, на котором пишешь. Остальные переводы создадутся автоматически!</small>
           </div>
 
           <!-- Title -->
@@ -142,7 +144,6 @@
           <!-- Buttons -->
           <div class="form-actions">
             <button type="button" id="preview-btn" class="btn btn-secondary">👁️ Предпросмотр</button>
-            <button type="button" id="preview-translations-btn" class="btn btn-secondary">🌐 Проверить переводы</button>
             <button type="button" id="draft-btn" class="btn btn-outline">💾 Черновик</button>
             <button type="submit" class="btn btn-primary">📤 Опубликовать</button>
           </div>
@@ -166,13 +167,6 @@
       </div>
     </div>
 
-    <!-- Translation Preview Modal -->
-    <div id="translation-modal" class="modal" style="display: none;">
-      <div class="modal-content modal-wide">
-        <button class="modal-close" onclick="closeTranslationPreview()">✕</button>
-        <div id="translation-preview" class="translation-preview"></div>
-      </div>
-    </div>
   </div>
 
   <script src="/admin-panel/admin.js"></script>

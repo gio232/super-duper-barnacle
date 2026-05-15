@@ -11,17 +11,21 @@ async function loadBlogPosts() {
   try {
     // Get current language from window.currentLang (set by script.js) or localStorage
     const lang = window.currentLang || localStorage.getItem('scosag_lang') || 'ru';
+    console.log('Loading blog posts for language:', lang);
 
-    // Fetch posts for current language, published only
-    const response = await fetch(`${window.location.origin}/api/posts?lang=${lang}&published=true`);
+    // Fetch posts from static JSON file
+    const response = await fetch('/posts-data.json');
     const data = await response.json();
 
     if (data.success && data.data && data.data.length > 0) {
+      // Filter by language and published status
+      const filteredPosts = data.data.filter(p => p.lang === lang && p.published);
+
       // Clear grid
       blogGrid.innerHTML = '';
 
       // Add posts
-      data.data.forEach(post => {
+      filteredPosts.forEach(post => {
         const date = new Date(post.date).toLocaleDateString(
           lang === 'ru' ? 'ru-RU' : lang === 'de' ? 'de-DE' : 'en-US',
           {
@@ -66,15 +70,23 @@ async function loadBlogPosts() {
       // No posts
       blogGrid.innerHTML = `
         <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted);">
-          <div style="font-size: 16px;" data-i18n="blog_no_articles">Статьи не найдены</div>
+          <div style="font-size: 16px;" data-i18n="blog_no_articles">No articles found</div>
         </div>
       `;
+
+      // Translate the message
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (TRANSLATIONS[key] && TRANSLATIONS[key][lang]) {
+          el.innerHTML = TRANSLATIONS[key][lang];
+        }
+      });
     }
   } catch (error) {
     console.error('Error loading blog posts:', error);
     blogGrid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted);">
-        <div style="font-size: 16px;">Ошибка загрузки статей</div>
+        <div style="font-size: 16px;">Error loading articles</div>
       </div>
     `;
   }

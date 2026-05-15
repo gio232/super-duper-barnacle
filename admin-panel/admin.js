@@ -1,13 +1,20 @@
 /**
- * Админ Панель JavaScript
- * Управление статьями, загрузка медиа, мультиязычный контент
+ * Админ Панель JavaScript (без сервера - работает локально)
+ * Управление статьями через JSON файл и localStorage
  */
 
-const API_URL = window.location.origin + '/api';
 let authToken = localStorage.getItem('authToken');
 let currentUser = localStorage.getItem('currentUser');
 let currentLang = localStorage.getItem('currentLang') || 'ru';
 let allPosts = [];
+let editingPostSlug = null;
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'admin123';
+
+// API URL - автоматически определяется для локальной разработки и продакшена
+const API_URL = window.location.origin === 'http://localhost:8080' || window.location.origin === 'http://localhost:3000'
+  ? '/api'
+  : window.location.origin + '/api';
 
 // ===== ИНИЦИАЛИЗАЦИЯ =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -25,13 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('post-form').addEventListener('submit', handlePublish);
   document.getElementById('draft-btn').addEventListener('click', handleDraft);
   document.getElementById('preview-btn').addEventListener('click', handlePreview);
-  document.getElementById('preview-translations-btn').addEventListener('click', handleTranslationPreview);
   document.getElementById('logout-btn').addEventListener('click', handleLogout);
   document.getElementById('image-file').addEventListener('change', handleImageUpload);
 });
 
 // ===== AUTH FUNCTIONS =====
-async function handleLogin(e) {
+function handleLogin(e) {
   e.preventDefault();
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
@@ -48,94 +54,42 @@ async function handleLogin(e) {
   button.textContent = '⏳ Проверяю...';
   button.disabled = true;
 
-  try {
-    const response = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      authToken = data.token;
-      currentUser = username;
-      localStorage.setItem('authToken', authToken);
-      localStorage.setItem('currentUser', currentUser);
-      loginError.style.display = 'none';
-      showAdminPanel();
-      loadPosts();
-    } else {
-      loginError.textContent = '❌ ' + (data.message || 'Ошибка входа');
-      loginError.style.display = 'block';
-      button.textContent = originalText;
-      button.disabled = false;
-    }
-  } catch (error) {
-    loginError.textContent = '❌ ' + error.message;
+  // Проверка локально
+  if (username === ADMIN_USER && password === ADMIN_PASS) {
+    authToken = 'local-token-' + Date.now();
+    currentUser = username;
+    localStorage.setItem('authToken', authToken);
+    localStorage.setItem('currentUser', currentUser);
+    loginError.style.display = 'none';
+    button.textContent = originalText;
+    button.disabled = false;
+    showAdminPanel();
+    loadPosts();
+  } else {
+    loginError.textContent = '❌ Неверное имя пользователя или пароль';
     loginError.style.display = 'block';
     button.textContent = originalText;
     button.disabled = false;
   }
 }
 
-async function verifyToken() {
-  try {
-    const response = await fetch(`${API_URL}/auth/verify`, {
-      headers: { 'Authorization': `Bearer ${authToken}` }
-    });
-
-    const data = await response.json();
-    if (data.success) {
-      showAdminPanel();
-      loadPosts();
-    } else {
-      handleLogout();
-    }
-  } catch (error) {
-    handleLogout();
+function verifyToken() {
+  if (authToken && currentUser) {
+    showAdminPanel();
+    loadPosts();
+  } else {
+    showLoginForm();
   }
 }
 
-async function handleForgotPassword(e) {
+function handleForgotPassword(e) {
   e.preventDefault();
-  const username = document.getElementById('reset-username').value;
   const resetError = document.getElementById('reset-error');
   const resetSuccess = document.getElementById('reset-success');
-  const button = e.target.querySelector('button[type="submit"]');
-  const originalText = button.textContent;
 
-  button.textContent = '⏳ Отправляю...';
-  button.disabled = true;
-
-  try {
-    const response = await fetch(`${API_URL}/auth/forgot-password`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username })
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      resetError.style.display = 'none';
-      resetSuccess.textContent = '✓ ' + data.message;
-      resetSuccess.style.display = 'block';
-      button.textContent = originalText;
-      button.disabled = false;
-    } else {
-      resetSuccess.style.display = 'none';
-      resetError.textContent = '❌ ' + data.message;
-      resetError.style.display = 'block';
-      button.textContent = originalText;
-      button.disabled = false;
-    }
-  } catch (error) {
-    resetError.textContent = '❌ Ошибка: ' + error.message;
-    resetError.style.display = 'block';
-    button.textContent = originalText;
-    button.disabled = false;
-  }
+  resetError.style.display = 'none';
+  resetSuccess.textContent = '✓ Пароль по умолчанию: admin123 (это демонстрационная панель)';
+  resetSuccess.style.display = 'block';
 }
 
 function handleLogout() {
@@ -182,8 +136,8 @@ async function handleImageUpload(e) {
     const data = await response.json();
 
     if (data.success) {
-      document.getElementById('image').value = data.data.original;
-      showImagePreview(data.data.original);
+      document.getElementById('image').value = data.data.original || data.data.url;
+      showImagePreview(data.data.original || data.data.url);
       showAlert('✓ Изображение загружено', 'success');
     } else {
       showAlert('❌ Ошибка загрузки: ' + data.error, 'error');
@@ -231,8 +185,11 @@ async function savePost(post) {
   }
 
   try {
-    const response = await fetch(`${API_URL}/posts`, {
-      method: 'POST',
+    const endpoint = post.id ? `${API_URL}/posts/${post.id}` : `${API_URL}/posts`;
+    const method = post.id ? 'PUT' : 'POST';
+
+    const response = await fetch(endpoint, {
+      method: method,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${authToken}`
@@ -246,29 +203,31 @@ async function savePost(post) {
       showAlert(`✓ Статья "${post.title}" ${post.published ? 'опубликована' : 'сохранена как черновик'}!`, 'success');
       document.getElementById('post-form').reset();
       document.getElementById('image-preview').innerHTML = '';
+      editingPostSlug = null;
       loadPosts();
     } else {
-      showAlert(`❌ Ошибка: ${data.error}`, 'error');
+      showAlert('❌ Ошибка: ' + data.error, 'error');
     }
   } catch (error) {
-    showAlert('❌ Ошибка при сохранении', 'error');
-    console.error(error);
+    showAlert('❌ Ошибка при сохранении: ' + error.message, 'error');
   }
 }
 
 // ===== LOAD POSTS =====
-async function loadPosts() {
-  try {
-    const response = await fetch(`${API_URL}/posts`);
-    const data = await response.json();
-
-    if (data.success) {
-      allPosts = data.data;
-      renderPostsList(allPosts);
-    }
-  } catch (error) {
-    console.error('Ошибка при загрузке постов:', error);
-  }
+function loadPosts() {
+  fetch(`${API_URL}/posts`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.success && data.data) {
+        allPosts = data.data;
+        renderPostsList(allPosts);
+      }
+    })
+    .catch(error => {
+      console.error('Ошибка при загрузке постов:', error);
+      allPosts = [];
+      renderPostsList([]);
+    });
 }
 
 function renderPostsList(posts) {
@@ -340,7 +299,33 @@ async function deletePost(slug) {
 }
 
 function editPost(slug) {
-  alert('📝 Редактирование будет добавлено в следующей версии');
+  if (!slug || slug === 'new') {
+    alert('⚠️ Сначала опубликуй статью');
+    return;
+  }
+
+  const post = allPosts.find(p => p.slug === slug);
+  if (!post) {
+    alert('⚠️ Статья не найдена');
+    return;
+  }
+
+  // Заполни форму данными статьи
+  document.getElementById('title').value = post.title;
+  document.getElementById('description').value = post.description || '';
+  document.getElementById('content').value = post.content;
+  document.getElementById('author').value = post.author || '';
+  document.getElementById('language').value = post.lang;
+  document.getElementById('published').checked = post.published;
+  document.getElementById('image').value = post.image || '';
+
+  if (post.image) {
+    showImagePreview(post.image);
+  }
+
+  // Скролл к форме
+  document.getElementById('post-form').scrollIntoView({ behavior: 'smooth' });
+  showAlert(`✏️ Редактируешь: "${post.title}"`, 'info');
 }
 
 // ===== PREVIEW =====
@@ -371,71 +356,7 @@ function closePreview() {
 }
 
 // ===== TRANSLATION PREVIEW =====
-async function handleTranslationPreview(e) {
-  e.preventDefault();
 
-  const post = getFormData();
-
-  if (!post.title || !post.content) {
-    alert('⚠️ Заполни заголовок и содержание');
-    return;
-  }
-
-  try {
-    // Переводим заголовок и содержимое
-    const enTitle = await translateText(post.title, 'ru|en');
-    const deTitle = await translateText(post.title, 'ru|de');
-
-    const enContent = await translateText(post.content, 'ru|en');
-    const deContent = await translateText(post.content, 'ru|de');
-
-    const modal = document.getElementById('translation-modal');
-    const preview = document.getElementById('translation-preview');
-
-    preview.innerHTML = `
-      <div class="translation-tabs">
-        <div class="translation-tab">
-          <h2>🇷🇺 Русский (оригинал)</h2>
-          <h3>${escapeHtml(post.title)}</h3>
-          <div class="translation-content">${markdownToHtml(post.content)}</div>
-        </div>
-
-        <div class="translation-tab">
-          <h2>🇬🇧 English (автоперевод)</h2>
-          <h3>${escapeHtml(enTitle)}</h3>
-          <div class="translation-content">${markdownToHtml(enContent)}</div>
-          <p style="color: #999; font-size: 12px; margin-top: 12px;">⚠️ Это автоматический перевод. Проверь и отредактируй если нужно!</p>
-        </div>
-
-        <div class="translation-tab">
-          <h2>🇩🇪 Deutsch (автоперевод)</h2>
-          <h3>${escapeHtml(deTitle)}</h3>
-          <div class="translation-content">${markdownToHtml(deContent)}</div>
-          <p style="color: #999; font-size: 12px; margin-top: 12px;">⚠️ Это автоматический перевод. Проверь и отредактируй если нужно!</p>
-        </div>
-      </div>
-    `;
-
-    modal.style.display = 'block';
-  } catch (error) {
-    showAlert('❌ Ошибка при переводе: ' + error.message, 'error');
-  }
-}
-
-function closeTranslationPreview() {
-  document.getElementById('translation-modal').style.display = 'none';
-}
-
-async function translateText(text, langPair) {
-  try {
-    const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${langPair}`);
-    const data = await response.json();
-    return data.responseData?.translatedText || text;
-  } catch (error) {
-    console.error('Ошибка при переводе:', error);
-    return text;
-  }
-}
 
 // ===== MARKDOWN FUNCTIONS =====
 function insertMarkdown(before, after) {
@@ -492,10 +413,29 @@ function showAlert(message, type = 'info') {
   }
 }
 
+// ===== DOWNLOAD POSTS DATA =====
+function downloadPostsJSON() {
+  const data = {
+    success: true,
+    data: allPosts
+  };
+
+  const jsonString = JSON.stringify(data, null, 2);
+  const blob = new Blob([jsonString], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'posts-data.json';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+
+  showAlert('✓ Файл posts-data.json скачан! Загрузи его на хостинг в корневую папку', 'success');
+}
+
 // Close modals on background click
 window.addEventListener('click', (e) => {
   const modal = document.getElementById('preview-modal');
-  const transModal = document.getElementById('translation-modal');
   if (e.target === modal) closePreview();
-  if (e.target === transModal) closeTranslationPreview();
 });

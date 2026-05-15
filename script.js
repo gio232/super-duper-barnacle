@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ===== LANGUAGE SYSTEM =====
-let currentLang = localStorage.getItem('scosag_lang') || 'ru';
+window.currentLang = localStorage.getItem('scosag_lang') || 'ru';
 
 const LANG_META = {
   ru: { flag: '🇷🇺', name: 'Русский', code: 'RU' },
@@ -24,7 +24,7 @@ const LANG_META = {
 function initLanguage() {
   // Build dropdown HTML dynamically for each .lang-switcher
   document.querySelectorAll('.lang-switcher').forEach(switcher => {
-    const meta = LANG_META[currentLang] || LANG_META.de;
+    const meta = LANG_META[window.currentLang] || LANG_META.de;
 
     switcher.innerHTML = `
       <div class="lang-toggle" role="button" tabindex="0" aria-label="Select language">
@@ -34,11 +34,11 @@ function initLanguage() {
       </div>
       <div class="lang-dropdown">
         ${Object.entries(LANG_META).map(([code, m]) => `
-          <button class="lang-option${code === currentLang ? ' active' : ''}" data-lang="${code}">
+          <button class="lang-option${code === window.currentLang ? ' active' : ''}" data-lang="${code}">
             <span class="lang-flag">${m.flag}</span>
             <span class="lang-name">${m.name}</span>
             <span class="lang-code">${m.code}</span>
-            ${code === currentLang ? '<svg class="lang-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>' : ''}
+            ${code === window.currentLang ? '<svg class="lang-check" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>' : ''}
           </button>
         `).join('')}
       </div>
@@ -79,11 +79,11 @@ function initLanguage() {
   });
 
   // Set initial language
-  setLanguage(currentLang, false);
+  setLanguage(window.currentLang, false);
 }
 
 function setLanguage(lang, save) {
-  currentLang = lang;
+  window.currentLang = lang;
   if (save) localStorage.setItem('scosag_lang', lang);
 
   const meta = LANG_META[lang] || LANG_META.de;
@@ -318,19 +318,21 @@ async function initBlogCarousel() {
 
   try {
     // Fetch blog posts
-    const response = await fetch(`${window.location.origin}/api/posts?lang=${currentLang}&published=true`);
+    const response = await fetch('/posts-data.json');
     const data = await response.json();
 
     if (data.success && data.data && data.data.length > 0) {
-      // Get latest 6 posts
-      const posts = data.data.slice(0, 6);
+      // Filter by language and published status, then get latest 6
+      const posts = data.data
+        .filter(p => p.lang === window.currentLang && p.published)
+        .slice(0, 6);
 
       // Clear track
       carouselTrack.innerHTML = '';
 
       // Add posts to carousel
       posts.forEach(post => {
-        const date = new Date(post.date).toLocaleDateString(currentLang === 'ru' ? 'ru-RU' : currentLang === 'de' ? 'de-DE' : 'en-US', {
+        const date = new Date(post.date).toLocaleDateString(window.currentLang === 'ru' ? 'ru-RU' : window.currentLang === 'de' ? 'de-DE' : 'en-US', {
           year: 'numeric',
           month: 'long',
           day: 'numeric'
@@ -356,8 +358,8 @@ async function initBlogCarousel() {
       // Translate carousel items
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.dataset.i18n;
-        if (TRANSLATIONS[key] && TRANSLATIONS[key][currentLang]) {
-          el.innerHTML = TRANSLATIONS[key][currentLang];
+        if (TRANSLATIONS[key] && TRANSLATIONS[key][window.currentLang]) {
+          el.innerHTML = TRANSLATIONS[key][window.currentLang];
         }
       });
 

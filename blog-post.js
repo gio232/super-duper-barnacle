@@ -18,8 +18,8 @@ async function loadBlogPost() {
     // Get current language from the page (set by script.js)
     const lang = window.currentLang || localStorage.getItem('scosag_lang') || 'ru';
 
-    // Fetch ALL posts and find the one with matching slug and language
-    const response = await fetch(`${window.location.origin}/api/posts?lang=${lang}`);
+    // Fetch ALL posts from static JSON file
+    const response = await fetch('/posts-data.json');
     const data = await response.json();
 
     if (data.success && data.data && data.data.length > 0) {
@@ -68,14 +68,14 @@ async function loadBlogPost() {
         // Update language in navigation
         document.documentElement.lang = lang === 'ua' ? 'uk' : lang;
       } else {
-        document.getElementById('post-body').innerHTML = '<p>Статья не найдена</p>';
+        document.getElementById('post-body').innerHTML = '<p>Article not found</p>';
       }
     } else {
-      document.getElementById('post-body').innerHTML = '<p>Статья не найдена</p>';
+      document.getElementById('post-body').innerHTML = '<p>Article not found</p>';
     }
   } catch (error) {
     console.error('Error loading blog post:', error);
-    document.getElementById('post-body').innerHTML = '<p>Ошибка при загрузке статьи</p>';
+    document.getElementById('post-body').innerHTML = '<p>Error loading article</p>';
   }
 }
 

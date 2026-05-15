@@ -322,7 +322,7 @@ body {
 .post-item {
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 16px;
+  padding: 36px;
   transition: all 0.2s ease;
 }
 
@@ -335,7 +335,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
   gap: 12px;
 }
 
@@ -343,14 +343,16 @@ body {
   font-weight: 600;
   color: var(--text-heading);
   margin: 0;
-  font-size: 16px;
+  font-size: 18px;
   flex: 1;
+  line-height: 1.5;
 }
 
 .post-meta {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
-  margin: 4px 0;
+  margin: 12px 0;
+  line-height: 1.6;
 }
 
 .post-status {
