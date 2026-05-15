@@ -382,11 +382,12 @@ async function handleTranslationPreview(e) {
   }
 
   try {
-    const translateUrl = 'https://api.mymemory.translated.net/get';
-
-    // Переводим заголовок
+    // Переводим заголовок и содержимое
     const enTitle = await translateText(post.title, 'ru|en');
     const deTitle = await translateText(post.title, 'ru|de');
+
+    const enContent = await translateText(post.content, 'ru|en');
+    const deContent = await translateText(post.content, 'ru|de');
 
     const modal = document.getElementById('translation-modal');
     const preview = document.getElementById('translation-preview');
@@ -402,13 +403,15 @@ async function handleTranslationPreview(e) {
         <div class="translation-tab">
           <h2>🇬🇧 English (автоперевод)</h2>
           <h3>${escapeHtml(enTitle)}</h3>
-          <p style="color: #999; font-size: 12px;">⚠️ Это автоматический перевод. Проверь и отредактируй если нужно!</p>
+          <div class="translation-content">${markdownToHtml(enContent)}</div>
+          <p style="color: #999; font-size: 12px; margin-top: 12px;">⚠️ Это автоматический перевод. Проверь и отредактируй если нужно!</p>
         </div>
 
         <div class="translation-tab">
           <h2>🇩🇪 Deutsch (автоперевод)</h2>
           <h3>${escapeHtml(deTitle)}</h3>
-          <p style="color: #999; font-size: 12px;">⚠️ Это автоматический перевод. Проверь и отредактируй если нужно!</p>
+          <div class="translation-content">${markdownToHtml(deContent)}</div>
+          <p style="color: #999; font-size: 12px; margin-top: 12px;">⚠️ Это автоматический перевод. Проверь и отредактируй если нужно!</p>
         </div>
       </div>
     `;
