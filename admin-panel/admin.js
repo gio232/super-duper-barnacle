@@ -180,7 +180,7 @@ async function handleDraft(e) {
 }
 
 function getFormData() {
-  return {
+  const data = {
     title: document.getElementById('title').value,
     description: document.getElementById('description').value,
     content: document.getElementById('content').value,
@@ -188,6 +188,17 @@ function getFormData() {
     image: document.getElementById('image').value || null,
     author: document.getElementById('author').value
   };
+
+  // Если редактируем - добавляем slug
+  if (editingPostSlug) {
+    const post = allPosts.find(p => p.slug === editingPostSlug);
+    if (post) {
+      data.id = post.id;
+      data.slug = post.slug;
+    }
+  }
+
+  return data;
 }
 
 async function savePost(post) {
@@ -212,7 +223,8 @@ async function savePost(post) {
     const data = await response.json();
 
     if (data.success) {
-      showAlert(`✓ Статья "${post.title}" ${post.published ? 'опубликована' : 'сохранена как черновик'}!`, 'success');
+      const action = editingPostSlug ? 'обновлена' : (post.published ? 'опубликована' : 'сохранена как черновик');
+      showAlert(`✓ Статья "${post.title}" ${action}!`, 'success');
       document.getElementById('post-form').reset();
       document.getElementById('image-preview').innerHTML = '';
       editingPostSlug = null;
@@ -322,6 +334,9 @@ function editPost(slug) {
     return;
   }
 
+  // Сохраняем ID редактируемой статьи
+  editingPostSlug = post.slug;
+
   // Заполни форму данными статьи
   document.getElementById('title').value = post.title;
   document.getElementById('description').value = post.description || '';
@@ -337,7 +352,7 @@ function editPost(slug) {
 
   // Скролл к форме
   document.getElementById('post-form').scrollIntoView({ behavior: 'smooth' });
-  showAlert(`✏️ Редактируешь: "${post.title}"`, 'info');
+  showAlert(`✏️ Редактируешь: "${post.title}" | Нажми "Опубликовать" чтобы сохранить изменения`, 'info');
 }
 
 // ===== PREVIEW =====
