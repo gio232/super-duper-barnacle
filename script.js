@@ -128,6 +128,16 @@ function setLanguage(lang, save) {
   if (document.getElementById('carousel-track')) {
     initBlogCarousel();
   }
+
+  // Reload blog posts on blog page with new language
+  if (document.getElementById('blog-grid') && typeof loadBlogPosts === 'function') {
+    loadBlogPosts();
+  }
+
+  // Reload blog post content on blog-post page
+  if (document.getElementById('post-body') && typeof loadBlogPost === 'function') {
+    loadBlogPost();
+  }
 }
 
 // ===== MOBILE MENU =====
@@ -334,7 +344,7 @@ async function initBlogCarousel() {
             <h3 class="carousel-item-title">${escapeHtml(post.title)}</h3>
             <div class="carousel-item-description">${escapeHtml(post.description || post.content.substring(0, 100))}</div>
             <div class="carousel-item-meta">${date}</div>
-            <a href="/blog.html?slug=${post.slug}" class="carousel-item-link">
+            <a href="/blog-post.html?slug=${post.slug}" class="carousel-item-link">
               <span data-i18n="blog_read_more">Читать статью</span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
             </a>

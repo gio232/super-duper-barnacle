@@ -15,53 +15,61 @@ async function loadBlogPost() {
   }
 
   try {
-    const lang = localStorage.getItem('scosag_lang') || 'ru';
+    // Get current language from the page (set by script.js)
+    const lang = window.currentLang || localStorage.getItem('scosag_lang') || 'ru';
 
-    // Fetch the specific post
-    const response = await fetch(`${window.location.origin}/api/posts/${slug}`);
+    // Fetch ALL posts and find the one with matching slug and language
+    const response = await fetch(`${window.location.origin}/api/posts?lang=${lang}`);
     const data = await response.json();
 
     if (data.success && data.data && data.data.length > 0) {
-      // Find post in current language
-      let post = data.data.find(p => p.lang === lang);
-      // Fallback to first post if language not found
-      if (!post) post = data.data[0];
+      // Find post with matching slug and language
+      let post = data.data.find(p => p.slug === slug && p.lang === lang);
 
-      // Update page title
-      document.title = `${post.title} — Swiss Center Services AG`;
-
-      // Update meta description
-      const metaDesc = document.querySelector('meta[name="description"]');
-      if (metaDesc) metaDesc.content = post.description || post.content.substring(0, 150);
-
-      // Display post
-      document.getElementById('post-title').textContent = post.title;
-
-      const date = new Date(post.date).toLocaleDateString(
-        lang === 'ru' ? 'ru-RU' : lang === 'de' ? 'de-DE' : 'en-US',
-        {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        }
-      );
-      document.getElementById('post-date').textContent = date;
-      document.getElementById('post-author').textContent = `by ${post.author || 'Swiss Center Services AG'}`;
-
-      // Display image if available
-      const imgEl = document.getElementById('post-image');
-      if (post.image) {
-        imgEl.src = post.image;
-        imgEl.alt = post.title;
-      } else {
-        imgEl.style.display = 'none';
+      // If not found in current language, take any version of this post
+      if (!post) {
+        post = data.data[0];
       }
 
-      // Convert markdown to HTML and display
-      document.getElementById('post-body').innerHTML = markdownToHtml(post.content);
+      if (post) {
+        // Update page title
+        document.title = `${post.title} — Swiss Center Services AG`;
 
-      // Update language in navigation
-      document.documentElement.lang = lang === 'ua' ? 'uk' : lang;
+        // Update meta description
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.content = post.description || post.content.substring(0, 150);
+
+        // Display post
+        document.getElementById('post-title').textContent = post.title;
+
+        const date = new Date(post.date).toLocaleDateString(
+          lang === 'ru' ? 'ru-RU' : lang === 'de' ? 'de-DE' : 'en-US',
+          {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          }
+        );
+        document.getElementById('post-date').textContent = date;
+        document.getElementById('post-author').textContent = `by ${post.author || 'Swiss Center Services AG'}`;
+
+        // Display image if available
+        const imgEl = document.getElementById('post-image');
+        if (post.image) {
+          imgEl.src = post.image;
+          imgEl.alt = post.title;
+        } else {
+          imgEl.style.display = 'none';
+        }
+
+        // Convert markdown to HTML and display
+        document.getElementById('post-body').innerHTML = markdownToHtml(post.content);
+
+        // Update language in navigation
+        document.documentElement.lang = lang === 'ua' ? 'uk' : lang;
+      } else {
+        document.getElementById('post-body').innerHTML = '<p>Статья не найдена</p>';
+      }
     } else {
       document.getElementById('post-body').innerHTML = '<p>Статья не найдена</p>';
     }

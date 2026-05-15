@@ -9,8 +9,8 @@ async function loadBlogPosts() {
   if (!blogGrid) return;
 
   try {
-    // Get current language from localStorage or default to 'ru'
-    const lang = localStorage.getItem('scosag_lang') || 'ru';
+    // Get current language from window.currentLang (set by script.js) or localStorage
+    const lang = window.currentLang || localStorage.getItem('scosag_lang') || 'ru';
 
     // Fetch posts for current language, published only
     const response = await fetch(`${window.location.origin}/api/posts?lang=${lang}&published=true`);
