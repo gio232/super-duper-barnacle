@@ -87,7 +87,7 @@ router.get('/:slug', (req, res) => {
  */
 router.post('/', auth, async (req, res) => {
   try {
-    const { title, description, content, lang = 'ru', image, author } = req.body;
+    const { title, description, content, lang = 'ru', image, author, published = false } = req.body;
 
     if (!title || !content) {
       return res.status(400).json({
@@ -96,15 +96,11 @@ router.post('/', auth, async (req, res) => {
       });
     }
 
-    // Генерируем slug
-    const slug = title
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .substring(0, 50);
+    // Генерируем уникальный slug (используем uuid)
+    const slug = uuidv4();
 
     const post = {
-      id: uuidv4(),
+      id: slug,
       slug: slug,
       title: title,
       description: description || content.substring(0, 150),
@@ -113,7 +109,7 @@ router.post('/', auth, async (req, res) => {
       image: image || null,
       author: author || 'Swiss Center Services AG',
       date: new Date().toISOString(),
-      published: false,
+      published: published,
       translations: {}
     };
 

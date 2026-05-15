@@ -1,78 +1,201 @@
 /**
- * Admin Panel JavaScript
- * Управление статьями блога
+ * Админ Панель JavaScript
+ * Управление статьями, загрузка медиа, мультиязычный контент
  */
 
 const API_URL = window.location.origin + '/api';
 let authToken = localStorage.getItem('authToken');
+let currentUser = localStorage.getItem('currentUser');
 let currentLang = localStorage.getItem('currentLang') || 'ru';
+let allPosts = [];
 
 // ===== ИНИЦИАЛИЗАЦИЯ =====
 document.addEventListener('DOMContentLoaded', () => {
   if (authToken) {
-    showAdminPanel();
-    loadPosts();
+    verifyToken();
   } else {
     showLoginForm();
   }
 
-  // Event listeners
+  // Event listeners для логина
   document.getElementById('login').addEventListener('submit', handleLogin);
+  document.getElementById('forgot-form').addEventListener('submit', handleForgotPassword);
+
+  // Event listeners для админ панели
   document.getElementById('post-form').addEventListener('submit', handlePublish);
   document.getElementById('draft-btn').addEventListener('click', handleDraft);
   document.getElementById('preview-btn').addEventListener('click', handlePreview);
+  document.getElementById('preview-translations-btn').addEventListener('click', handleTranslationPreview);
   document.getElementById('logout-btn').addEventListener('click', handleLogout);
+  document.getElementById('image-file').addEventListener('change', handleImageUpload);
 });
 
-// ===== LOGIN =====
+// ===== AUTH FUNCTIONS =====
 async function handleLogin(e) {
   e.preventDefault();
+  const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
   const loginError = document.getElementById('login-error');
+  const button = e.target.querySelector('button[type="submit"]');
+  const originalText = button.textContent;
+
+  if (!username || !password) {
+    loginError.textContent = '❌ Заполни все поля';
+    loginError.style.display = 'block';
+    return;
+  }
+
+  button.textContent = '⏳ Проверяю...';
+  button.disabled = true;
 
   try {
     const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password })
+      body: JSON.stringify({ username, password })
     });
 
     const data = await response.json();
 
     if (data.success) {
       authToken = data.token;
+      currentUser = username;
       localStorage.setItem('authToken', authToken);
+      localStorage.setItem('currentUser', currentUser);
       loginError.style.display = 'none';
       showAdminPanel();
       loadPosts();
     } else {
-      loginError.textContent = '❌ ' + data.message;
+      loginError.textContent = '❌ ' + (data.message || 'Ошибка входа');
       loginError.style.display = 'block';
+      button.textContent = originalText;
+      button.disabled = false;
     }
   } catch (error) {
-    loginError.textContent = '❌ Ошибка подключения';
+    loginError.textContent = '❌ ' + error.message;
     loginError.style.display = 'block';
-    console.error(error);
+    button.textContent = originalText;
+    button.disabled = false;
   }
 }
 
-// ===== LOGOUT =====
+async function verifyToken() {
+  try {
+    const response = await fetch(`${API_URL}/auth/verify`, {
+      headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      showAdminPanel();
+      loadPosts();
+    } else {
+      handleLogout();
+    }
+  } catch (error) {
+    handleLogout();
+  }
+}
+
+async function handleForgotPassword(e) {
+  e.preventDefault();
+  const username = document.getElementById('reset-username').value;
+  const resetError = document.getElementById('reset-error');
+  const resetSuccess = document.getElementById('reset-success');
+  const button = e.target.querySelector('button[type="submit"]');
+  const originalText = button.textContent;
+
+  button.textContent = '⏳ Отправляю...';
+  button.disabled = true;
+
+  try {
+    const response = await fetch(`${API_URL}/auth/forgot-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      resetError.style.display = 'none';
+      resetSuccess.textContent = '✓ ' + data.message;
+      resetSuccess.style.display = 'block';
+      button.textContent = originalText;
+      button.disabled = false;
+    } else {
+      resetSuccess.style.display = 'none';
+      resetError.textContent = '❌ ' + data.message;
+      resetError.style.display = 'block';
+      button.textContent = originalText;
+      button.disabled = false;
+    }
+  } catch (error) {
+    resetError.textContent = '❌ Ошибка: ' + error.message;
+    resetError.style.display = 'block';
+    button.textContent = originalText;
+    button.disabled = false;
+  }
+}
+
 function handleLogout() {
   authToken = null;
+  currentUser = null;
   localStorage.removeItem('authToken');
+  localStorage.removeItem('currentUser');
   document.getElementById('post-form').reset();
   showLoginForm();
 }
 
-// ===== SHOW/HIDE PANELS =====
 function showLoginForm() {
   document.getElementById('login-form').style.display = 'flex';
   document.getElementById('admin-panel').style.display = 'none';
 }
 
+function showForgotPassword() {
+  document.getElementById('login-form').style.display = 'none';
+  document.getElementById('forgot-password-form').style.display = 'flex';
+}
+
 function showAdminPanel() {
   document.getElementById('login-form').style.display = 'none';
+  document.getElementById('forgot-password-form').style.display = 'none';
   document.getElementById('admin-panel').style.display = 'block';
+  document.getElementById('current-user').textContent = currentUser || 'admin';
+}
+
+// ===== IMAGE UPLOAD =====
+async function handleImageUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await fetch(`${API_URL}/upload/image`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${authToken}` },
+      body: formData
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      document.getElementById('image').value = data.data.original;
+      showImagePreview(data.data.original);
+      showAlert('✓ Изображение загружено', 'success');
+    } else {
+      showAlert('❌ Ошибка загрузки: ' + data.error, 'error');
+    }
+  } catch (error) {
+    showAlert('❌ Ошибка: ' + error.message, 'error');
+  }
+}
+
+function showImagePreview(url) {
+  const preview = document.getElementById('image-preview');
+  preview.innerHTML = `<img src="${url}" alt="Preview" style="max-width: 200px; border-radius: 4px;">`;
 }
 
 // ===== POST CREATION =====
@@ -81,7 +204,6 @@ async function handlePublish(e) {
   const post = getFormData();
   post.published = document.getElementById('published').checked;
   await savePost(post);
-  document.getElementById('post-form').reset();
 }
 
 async function handleDraft(e) {
@@ -89,7 +211,6 @@ async function handleDraft(e) {
   const post = getFormData();
   post.published = false;
   await savePost(post);
-  document.getElementById('post-form').reset();
 }
 
 function getFormData() {
@@ -123,6 +244,8 @@ async function savePost(post) {
 
     if (data.success) {
       showAlert(`✓ Статья "${post.title}" ${post.published ? 'опубликована' : 'сохранена как черновик'}!`, 'success');
+      document.getElementById('post-form').reset();
+      document.getElementById('image-preview').innerHTML = '';
       loadPosts();
     } else {
       showAlert(`❌ Ошибка: ${data.error}`, 'error');
@@ -140,7 +263,8 @@ async function loadPosts() {
     const data = await response.json();
 
     if (data.success) {
-      renderPostsList(data.data);
+      allPosts = data.data;
+      renderPostsList(allPosts);
     }
   } catch (error) {
     console.error('Ошибка при загрузке постов:', error);
@@ -155,7 +279,6 @@ function renderPostsList(posts) {
     return;
   }
 
-  // Группируем посты по slug-у
   const grouped = {};
   posts.forEach(post => {
     if (!grouped[post.slug]) {
@@ -200,9 +323,7 @@ async function deletePost(slug) {
   try {
     const response = await fetch(`${API_URL}/posts/${slug}`, {
       method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${authToken}`
-      }
+      headers: { 'Authorization': `Bearer ${authToken}` }
     });
 
     const data = await response.json();
@@ -215,12 +336,11 @@ async function deletePost(slug) {
     }
   } catch (error) {
     showAlert('❌ Ошибка при удалении', 'error');
-    console.error(error);
   }
 }
 
 function editPost(slug) {
-  alert('📝 Функция редактирования будет добавлена позже. Пока удали и создай заново.');
+  alert('📝 Редактирование будет добавлено в следующей версии');
 }
 
 // ===== PREVIEW =====
@@ -250,7 +370,71 @@ function closePreview() {
   document.getElementById('preview-modal').style.display = 'none';
 }
 
-// ===== MARKDOWN EDITOR =====
+// ===== TRANSLATION PREVIEW =====
+async function handleTranslationPreview(e) {
+  e.preventDefault();
+
+  const post = getFormData();
+
+  if (!post.title || !post.content) {
+    alert('⚠️ Заполни заголовок и содержание');
+    return;
+  }
+
+  try {
+    const translateUrl = 'https://api.mymemory.translated.net/get';
+
+    // Переводим заголовок
+    const enTitle = await translateText(post.title, 'ru|en');
+    const deTitle = await translateText(post.title, 'ru|de');
+
+    const modal = document.getElementById('translation-modal');
+    const preview = document.getElementById('translation-preview');
+
+    preview.innerHTML = `
+      <div class="translation-tabs">
+        <div class="translation-tab">
+          <h2>🇷🇺 Русский (оригинал)</h2>
+          <h3>${escapeHtml(post.title)}</h3>
+          <div class="translation-content">${markdownToHtml(post.content)}</div>
+        </div>
+
+        <div class="translation-tab">
+          <h2>🇬🇧 English (автоперевод)</h2>
+          <h3>${escapeHtml(enTitle)}</h3>
+          <p style="color: #999; font-size: 12px;">⚠️ Это автоматический перевод. Проверь и отредактируй если нужно!</p>
+        </div>
+
+        <div class="translation-tab">
+          <h2>🇩🇪 Deutsch (автоперевод)</h2>
+          <h3>${escapeHtml(deTitle)}</h3>
+          <p style="color: #999; font-size: 12px;">⚠️ Это автоматический перевод. Проверь и отредактируй если нужно!</p>
+        </div>
+      </div>
+    `;
+
+    modal.style.display = 'block';
+  } catch (error) {
+    showAlert('❌ Ошибка при переводе: ' + error.message, 'error');
+  }
+}
+
+function closeTranslationPreview() {
+  document.getElementById('translation-modal').style.display = 'none';
+}
+
+async function translateText(text, langPair) {
+  try {
+    const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${langPair}`);
+    const data = await response.json();
+    return data.responseData?.translatedText || text;
+  } catch (error) {
+    console.error('Ошибка при переводе:', error);
+    return text;
+  }
+}
+
+// ===== MARKDOWN FUNCTIONS =====
 function insertMarkdown(before, after) {
   const textarea = document.getElementById('content');
   const start = textarea.selectionStart;
@@ -264,29 +448,21 @@ function insertMarkdown(before, after) {
   textarea.selectionEnd = start + before.length + selected.length;
 }
 
-// ===== MARKDOWN TO HTML =====
 function markdownToHtml(markdown) {
   let html = escapeHtml(markdown);
 
-  // Заголовки
   html = html.replace(/^### (.*?)$/gm, '<h3>$1</h3>');
   html = html.replace(/^## (.*?)$/gm, '<h2>$1</h2>');
   html = html.replace(/^# (.*?)$/gm, '<h1>$1</h1>');
 
-  // Жирный текст
   html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-  // Курсив
   html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
 
-  // Ссылки
   html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
 
-  // Списки
   html = html.replace(/^- (.*?)$/gm, '<li>$1</li>');
   html = html.replace(/(<li>.*?<\/li>)/s, '<ul>$1</ul>');
 
-  // Параграфы
   html = '<p>' + html.replace(/\n\n/g, '</p><p>') + '</p>';
   html = html.replace(/<\/p><h/g, '</p>\n<h');
   html = html.replace(/<\/p><ul/g, '</p>\n<ul');
@@ -307,15 +483,16 @@ function showAlert(message, type = 'info') {
   alert.textContent = message;
 
   const form = document.querySelector('.post-form');
-  form.insertBefore(alert, form.firstChild);
-
-  setTimeout(() => alert.remove(), 5000);
+  if (form) {
+    form.insertBefore(alert, form.firstChild);
+    setTimeout(() => alert.remove(), 5000);
+  }
 }
 
-// Закрытие модального окна при клике снаружи
+// Close modals on background click
 window.addEventListener('click', (e) => {
   const modal = document.getElementById('preview-modal');
-  if (e.target === modal) {
-    closePreview();
-  }
+  const transModal = document.getElementById('translation-modal');
+  if (e.target === modal) closePreview();
+  if (e.target === transModal) closeTranslationPreview();
 });

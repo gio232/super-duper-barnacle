@@ -1,11 +1,19 @@
 /**
  * Middleware для проверки авторизации
- * Проверяет токен в заголовке Authorization
+ * Проверяет username:password токен в заголовке Authorization
  */
 
 module.exports = function auth(req, res, next) {
   const token = req.headers.authorization?.split(' ')[1];
-  const adminPassword = process.env.ADMIN_PASSWORD || 'password123';
+  const ADMINS = {};
+
+  // Парсим администраторов из .env
+  if (process.env.ADMINS) {
+    process.env.ADMINS.split('|').forEach(admin => {
+      const [username, password] = admin.split(':');
+      ADMINS[username] = password;
+    });
+  }
 
   if (!token) {
     return res.status(401).json({
@@ -15,12 +23,13 @@ module.exports = function auth(req, res, next) {
   }
 
   try {
-    // Декодируем токен (простой способ)
+    // Декодируем токен
     const decoded = Buffer.from(token, 'base64').toString('utf-8');
-    const [timestamp, password] = decoded.split(':');
+    const [timestamp, username, password] = decoded.split(':');
 
-    if (password !== adminPassword) {
-      throw new Error('Invalid token');
+    // Проверяем учетные данные
+    if (!ADMINS[username] || ADMINS[username] !== password) {
+      throw new Error('Invalid credentials');
     }
 
     // Проверяем, что токен не старше 24 часов
@@ -34,11 +43,13 @@ module.exports = function auth(req, res, next) {
       });
     }
 
+    // Сохраняем username в req для использования в роутах
+    req.user = { username };
     next();
   } catch (error) {
     res.status(401).json({
       success: false,
-      error: 'Неверный токен'
+      error: 'Неверный токен: ' + error.message
     });
   }
 };
