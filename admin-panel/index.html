@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админка блога — Swiss Center Services AG</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Login Form -->
+    <div id="login-form" class="auth-panel">
+      <div class="auth-card">
+        <h1>🔐 Админка блога</h1>
+        <p>Swiss Center Services AG</p>
+
+        <form id="login">
+          <div class="form-group">
+            <label>Пароль:</label>
+            <input type="password" id="password" placeholder="Введи пароль" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Войти</button>
+        </form>
+
+        <div id="login-error" style="display: none; color: #d32f2f; margin-top: 16px; padding: 12px; background: #ffebee; border-radius: 4px;"></div>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel" style="display: none;">
+      <header class="admin-header">
+        <div class="admin-header-content">
+          <h1>✍️ Написать статью</h1>
+          <button id="logout-btn" class="btn btn-outline">Выход</button>
+        </div>
+      </header>
+
+      <main class="admin-main">
+        <form id="post-form" class="post-form">
+          <!-- Language Selection -->
+          <div class="form-group">
+            <label>Язык написания:</label>
+            <select id="language" required>
+              <option value="ru">🇷🇺 Русский</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="de">🇩🇪 Deutsch</option>
+            </select>
+            <small>Выбери язык, на котором пишешь. Остальные переводы создадутся автоматически!</small>
+          </div>
+
+          <!-- Title -->
+          <div class="form-group">
+            <label>Заголовок статьи:</label>
+            <input type="text" id="title" placeholder="Например: Как открыть бизнес в Швейцарии" required>
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <label>Краткое описание (для списка статей):</label>
+            <textarea id="description" placeholder="1-2 предложения" rows="3"></textarea>
+          </div>
+
+          <!-- Content -->
+          <div class="form-group">
+            <label>Содержание статьи:</label>
+            <div class="markdown-toolbar">
+              <button type="button" class="toolbar-btn" onclick="insertMarkdown('**', '**')" title="Жирный">
+                <strong>Б</strong>
+              </button>
+              <button type="button" class="toolbar-btn" onclick="insertMarkdown('*', '*')" title="Курсив">
+                <em>К</em>
+              </button>
+              <button type="button" class="toolbar-btn" onclick="insertMarkdown('\n# ', '\n')" title="Заголовок">
+                H1
+              </button>
+              <button type="button" class="toolbar-btn" onclick="insertMarkdown('- ', '')" title="Список">
+                ↳
+              </button>
+              <button type="button" class="toolbar-btn" onclick="insertMarkdown('[', '](url)')" title="Ссылка">
+                🔗
+              </button>
+            </div>
+            <textarea id="content" placeholder="Пиши в Markdown формате..." rows="15" required></textarea>
+            <small>💡 Поддерживается Markdown: **жирный**, *курсив*, # заголовки, - списки</small>
+          </div>
+
+          <!-- Image -->
+          <div class="form-group">
+            <label>Изображение (превью для списка):</label>
+            <input type="text" id="image" placeholder="https://example.com/image.jpg">
+            <small>Оставь пусто, если нет изображения. URL должна быть полная.</small>
+          </div>
+
+          <!-- Author -->
+          <div class="form-group">
+            <label>Автор:</label>
+            <input type="text" id="author" placeholder="Swiss Center Services AG" value="Swiss Center Services AG">
+          </div>
+
+          <!-- Publish -->
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="published">
+              <span>✓ Опубликовать сейчас (если не отмечено, то будет в черновиках)</span>
+            </label>
+          </div>
+
+          <!-- Buttons -->
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">📤 Опубликовать</button>
+            <button type="button" id="draft-btn" class="btn btn-outline">💾 Сохранить как черновик</button>
+            <button type="button" id="preview-btn" class="btn btn-secondary">👁️ Предпросмотр</button>
+          </div>
+        </form>
+
+        <!-- Posts List -->
+        <div id="posts-section" class="posts-section">
+          <h2>📋 Мои статьи</h2>
+          <div id="posts-list" class="posts-list">
+            <p>Загружаю статьи...</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="preview-modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closePreview()">✕</button>
+        <div id="preview-content" class="preview-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -22,35 +22,35 @@ class BlogLoader {
   }
 
   async loadPosts() {
-    // Проверяем кэш
+    // Проверяем кэш (15 минут)
     const cached = localStorage.getItem('blog_posts_cache');
-    if (cached) {
+    const cacheTime = localStorage.getItem('blog_posts_cache_time');
+
+    if (cached && cacheTime && Date.now() - parseInt(cacheTime) < 15 * 60 * 1000) {
       this.posts = JSON.parse(cached);
       return;
     }
 
     try {
-      // Загружаем из GitHub API (если репо на GitHub)
-      const response = await fetch('https://api.github.com/repos/artemtarianik/katefinalfix/contents/_posts/blog?ref=main');
+      // Загружаем из нашего API
+      const response = await fetch('/api/posts?published=true');
 
       if (!response.ok) {
         throw new Error('Не удалось загрузить посты');
       }
 
-      const files = await response.json();
-      const postFiles = files.filter(f => f.name.endsWith('.md') && !f.name.includes('.'));
+      const data = await response.json();
 
-      for (const file of postFiles) {
-        const content = await this.fetchFile(file.download_url);
-        const post = this.parseMarkdown(content, file.name);
-        if (post) this.posts.push(post);
+      if (data.success && data.data) {
+        this.posts = data.data;
+
+        // Кэшируем
+        localStorage.setItem('blog_posts_cache', JSON.stringify(this.posts));
+        localStorage.setItem('blog_posts_cache_time', Date.now().toString());
       }
-
-      // Кэшируем на час
-      localStorage.setItem('blog_posts_cache', JSON.stringify(this.posts));
     } catch (error) {
-      console.warn('GitHub API не доступен, используем локальные посты');
-      await this.loadLocalPosts();
+      console.error('Ошибка при загрузке постов:', error);
+      this.showError('Ошибка при загрузке статей');
     }
   }
 
