@@ -115,6 +115,9 @@ function setLanguage(lang, save) {
         el.placeholder = TRANSLATIONS[key][lang];
       } else if (el.tagName === 'OPTION') {
         el.textContent = TRANSLATIONS[key][lang];
+      } else if (el.tagName === 'A' || el.tagName === 'BUTTON') {
+        // For links and buttons, use textContent to preserve structure
+        el.textContent = TRANSLATIONS[key][lang];
       } else {
         el.innerHTML = TRANSLATIONS[key][lang];
       }

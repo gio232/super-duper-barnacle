@@ -1945,10 +1945,15 @@ h1, h2, h3, h4, h5, h6 {
   .page-hero p { font-size: 14px; }
 
   .btn-outline {
-    padding: 12px 24px;
+    padding: 14px 28px !important;
     font-size: 14px;
-    display: block !important;
-    cursor: pointer;
+    display: inline-flex !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    text-decoration: none !important;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
   }
 
   .cta-text h2 { font-size: 24px; }
