@@ -1819,6 +1819,11 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center;
   }
 
+  /* Hide desktop CTA button on mobile */
+  .nav-cta-link.desktop-only {
+    display: none !important;
+  }
+
   /* Hero */
   .hero { min-height: 440px; }
   .hero-content { padding: 60px 0; }
@@ -1940,8 +1945,11 @@ h1, h2, h3, h4, h5, h6 {
   .page-hero p { font-size: 14px; }
 
   .btn-outline {
+    display: flex !important;
     padding: 12px 24px;
     font-size: 14px;
+    width: auto;
+    margin: 0 auto;
   }
 
   .cta-text h2 { font-size: 24px; }
