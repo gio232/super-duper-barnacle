@@ -891,6 +891,7 @@ h1, h2, h3, h4, h5, h6 {
   inset: 0;
   z-index: 0;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .about-section .about-bg-decor img {
@@ -1064,6 +1065,8 @@ h1, h2, h3, h4, h5, h6 {
   height: 600px;
   background: radial-gradient(circle, rgba(168, 124, 184, 0.15) 0%, transparent 70%);
   border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .cta-section::after {
@@ -1075,6 +1078,18 @@ h1, h2, h3, h4, h5, h6 {
   height: 400px;
   background: radial-gradient(circle, rgba(201, 165, 216, 0.1) 0%, transparent 70%);
   border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cta-section .container {
+  position: relative;
+  z-index: 2;
+}
+
+.cta-section .btn-outline {
+  position: relative;
+  z-index: 3;
 }
 
 .cta-inner {
