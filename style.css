@@ -1814,6 +1814,7 @@ h1, h2, h3, h4, h5, h6 {
   .nav-divider { display: none; }
 
   .nav-cta-link {
+    display: flex !important;
     margin: 20px 0 0;
     justify-content: center;
   }
