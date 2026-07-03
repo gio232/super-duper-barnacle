@@ -327,21 +327,21 @@ const TRANSLATIONS = {
     de: 'Firmengründung in der Schweiz', fr: 'Création de société en Suisse', en: 'Company Registration in Switzerland', ru: 'Регистрация компании в Швейцарии', ua: 'Реєстрація компанії у Швейцарії'
   },
   legal_section1_text: {
-    de: 'Die Schweiz bietet eines der günstigsten Geschäftsumfelder in Europa. Wir begleiten Sie durch den gesamten Gründungsprozess — Auswahl der Rechtsform (AG, GmbH, Einzelunternehmen), Erstellung der Statuten, Eintragung ins Handelsregister und Eröffnung von Bankkonten.',
-    fr: 'La Suisse offre l\'un des environnements commerciaux les plus favorables d\'Europe. Nous vous accompagnons tout au long du processus de création — choix de la forme juridique (SA, Sàrl), rédaction des statuts, inscription au registre du commerce et ouverture de comptes bancaires.',
-    en: 'Switzerland offers one of the most favorable business environments in Europe. We guide you through the entire formation process — choosing the legal form (AG, GmbH), drafting articles of association, commercial registry and bank account opening.',
-    ru: 'Швейцария предлагает одну из наиболее благоприятных бизнес-сред в Европе. Мы проведём вас через весь процесс регистрации — выбор правовой формы (AG, GmbH, Einzelfirma), подготовка устава, регистрация в торговом реестре и открытие банковских счетов.',
-    ua: 'Швейцарія пропонує одне з найсприятливіших бізнес-середовищ в Європі. Ми проведемо вас через весь процес реєстрації — вибір правової форми (AG, GmbH), підготовка статуту, реєстрація в торговому реєстрі та відкриття банківських рахунків.'
+    de: 'Die Schweiz bietet eines der günstigsten Geschäftsumfelder in Europa. Wir begleiten Sie durch den gesamten Gründungsprozess — Auswahl der Rechtsform (AG, GmbH, Einzelunternehmen), Erstellung der Statuten, Eintragung ins Handelsregister und Eröffnung von Bankkonten. Allein im letzten Jahr haben wir mehr als 10 neue Unternehmen registriert. Wir eröffnen ein Konto für das genehmigte Kapital bei der Bank UBS AG, Valiant Bank. Wir arbeiten mit einem Notar zusammen, welcher Ihre Unterschrift online beglaubigen kann, so dass Sie dafür nicht extra in die Schweiz reisen müssen!',
+    fr: 'La Suisse offre l\'un des environnements commerciaux les plus favorables d\'Europe. Nous vous accompagnons tout au long du processus de création — choix de la forme juridique (SA, Sàrl), rédaction des statuts, inscription au registre du commerce et ouverture de comptes bancaires. Rien que l\'année dernière, nous avons enregistré plus de 10 nouvelles sociétés. Nous ouvrons un compte pour le capital social à la banque UBS AG, Valiant Bank. Nous travaillons avec un notaire qui peut certifier votre signature en ligne, vous n\'avez donc pas besoin de vous déplacer en Suisse !',
+    en: 'Switzerland offers one of the most favorable business environments in Europe. We guide you through the entire formation process — choosing the legal form (AG, GmbH), drafting articles of association, commercial registry and bank account opening. Over the past year alone, we registered more than 10 new companies. We open an account for share capital at UBS AG, Valiant Bank. We work with a notary who can certify your signature online so you do not need to come to Switzerland!',
+    ru: 'Швейцария предлагает одну из наиболее благоприятных бизнес-сред в Европе. Мы проведём вас через весь процесс регистрации — выбор правовой формы (AG, GmbH, Einzelfirma), подготовка устава, регистрация в торговом реестре и открытие банковских счетов.<br><br>Только за последний год мы зарегистрировали более 10 новых компаний. Счёт для уставного капитала открываем в банке UBS AG, Valiant Bank. Мы работаем с нотариусом, который онлайн может заверить Вашу подпись и Вам не нужно специально для этого приезжать в Швейцарию!',
+    ua: 'Швейцарія пропонує одне з найсприятливіших бізнес-середовищ в Європі. Ми проведемо вас через весь процес реєстрації — вибір правової форми (AG, GmbH), підготовка статуту, реєстрація в торговому реєстрі та відкриття банківських рахунків.<br><br>Тільки за останній рік ми зареєстрували понад 10 нових компаній. Рахунок для статутного капіталу відкриваємо в банку UBS AG, Valiant Bank. Ми працюємо з нотаріусом, який онлайн може завірити Ваш підпис і Вам не потрібно спеціально для этого приїжджати до Швейцарії!'
   },
   legal_section2_title: {
-    de: 'Umstrukturierung und Veränderungen', fr: 'Restructuration et changements', en: 'Restructuring & Changes', ru: 'Реструктуризация и изменения', ua: 'Реструктуризація та зміни'
+    de: 'Warum die Schweiz?', fr: 'Pourquoi la Suisse ?', en: 'Why Switzerland?', ru: 'Почему Швейцария?', ua: 'Чому Швейцарія?'
   },
   legal_section2_text: {
-    de: 'Fusionen, Übernahmen, Kapitalerhöhungen, Änderungen in der Geschäftsleitung — wir übernehmen die komplette Dokumentation und Beratung bei allen Unternehmensumstrukturierungen.',
-    fr: 'Fusions, acquisitions, augmentations de capital, changements de direction — nous prenons en charge toute la documentation et le conseil lors de toute restructuration d\'entreprise.',
-    en: 'Mergers, acquisitions, capital increases, management changes — we handle all documentation and advisory for any corporate restructuring.',
-    ru: 'Слияния, поглощения, увеличение капитала, смена руководства — мы берём на себя полное документальное сопровождение и консультирование при любых корпоративных реструктуризациях.',
-    ua: 'Злиття, поглинання, збільшення капіталу, зміна керівництва — ми беремо на себе повне документальне супроводження та консультування при будь-яких корпоративних реструктуризаціях.'
+    de: 'Vergleichen Sie die Gewinnsteuersätze von Unternehmen in verschiedenen Ländern: Richtwerte der Standard-Körperschaftsteuersätze, %',
+    fr: 'Comparez les taux d\'imposition des bénéfices des sociétés dans différents pays : taux d\'imposition standard indicatifs, %',
+    en: 'Compare corporate tax rates across different countries: Indicative standard corporate tax rates, %',
+    ru: 'Сравните ставки налога на прибыль компаний по разным странам:<br>Ориентировочные стандартные ставки корпоративного налога, %',
+    ua: 'Порівняйте ставки податку на прибуток компаній у різних країнах:<br>Орієнтовні стандартні ставки корпоративного податку, %'
   },
   legal_features_title: {
     de: 'Was umfasst unser Service', fr: 'Nos services incluent', en: 'Our Services Include', ru: 'Что включает наш сервис', ua: 'Що включає наш сервіс'
@@ -442,12 +442,12 @@ const TRANSLATIONS = {
   tax_section2_title: {
     de: 'Steuerplanung und -optimierung', fr: 'Planification et optimisation fiscale', en: 'Tax Planning & Optimization', ru: 'Налоговое планирование и оптимизация', ua: 'Податкове планування та оптимізація'
   },
-  tax_section2_text: {
-    de: 'Die Schweiz bietet ein attraktives Steuersystem mit kantonalen Unterschieden. Wir helfen Ihnen, den besten Standort und die optimale Struktur für Ihr Geschäft zu finden, um Steuern legal zu minimieren.',
-    fr: 'La Suisse dispose d\'un système fiscal attractif avec des différences cantonales. Nous vous aidons à trouver le meilleur emplacement et la structure optimale pour minimiser légalement vos impôts.',
-    en: 'Switzerland offers an attractive tax system with cantonal differences. We help you find the best location and optimal structure to legally minimize taxes.',
-    ru: 'Швейцария предлагает привлекательную налоговую систему с кантональными различиями. Мы поможем выбрать лучший кантон и оптимальную структуру для легальной минимизации налогов.',
-    ua: 'Швейцарія пропонує привабливу податкову систему з кантональними відмінностями. Ми допоможемо обрати найкращий кантон та оптимальну структуру для легальної мінімізації податків.'
+    tax_section2_text: {
+    de: 'Die Schweiz bietet ein attraktives Steuersystem mit kantonalen Unterschieden. Der Kanton Zug nimmt aufgrund seiner steuerlichen Attraktivität sowohl für lokale als auch für ausländische Unternehmen eine führende Rolle in der Schweiz ein. Mit einem niedrigen effektiven Körperschaftsteuersatz von ca. 11,8% gilt Zug weltweit als einer der besten Standorte für eine Unternehmensgründung. Wir helfen Ihnen, den besten Standort und die optimale Struktur für Ihr Geschäft zu finden, um Steuern legal zu minimieren. Unten finden Sie eine Vergleichstabelle der Körperschaftsteuersätze in den Schweizer Kantonen.',
+    fr: 'La Suisse offre un système fiscal attractif avec des différences cantonales. Le canton de Zoug occupe une position de leader en Suisse en raison de son attractivité fiscale pour les entreprises locales et étrangères. Avec un taux d\'imposition effectif bas d\'environ 11,8%, Zoug est reconnu comme l\'un des meilleurs endroits au monde pour enregistrer une entreprise. Nous vous aidons à trouver le meilleur emplacement et la structure optimale pour votre entreprise afin de minimiser légalement les impôts. Vous trouverez ci-dessous un tableau comparatif des taux d\'imposition cantonaux en Suisse.',
+    en: 'Switzerland offers an attractive tax system with cantonal differences. The Canton of Zug holds a leading position in Switzerland for tax attractiveness for both local and foreign companies. With a low effective corporate tax rate of approximately 11.8%, Zug is recognized as one of the best locations globally to register a business. We help you find the best location and optimal structure for your business to legally minimize taxes. Below is a comparative table of corporate tax rates across Swiss cantons.',
+    ru: 'Швейцария предлагает привлекательную налоговую систему с кантональными различиями. Кантон Цуг занимает лидирующую позицию по налоговой привлекательности в Швейцарии как для местных, так и для иностранных компаний. Благодаря низкой ставке корпоративного налога на прибыль (около 11.8% совокупной эффективной ставки), Цуг признан одним из лучших мест в мире для регистрации бизнеса. Налоговая система кантона предлагает стабильные условия ведения дел и возможности для оптимизации через Patent Box и вычеты на R&D. Ниже приведена сравнительная таблица ставок налога на прибыль по кантонам Швейцарии.',
+    ua: 'Швейцарія пропонує привабливу податкову систему з кантональними відмінностями. Кантон Цуг займає лідируючу позицію щодо податкової привабливості у Швейцарії як для місцевих, так і для іноземних компаній. Завдяки низькій ставці корпоративного податку на прибуток (близько 11.8% сукупної ефективної ставки), Цуг визнаний одним із найкращих місць у світі для реєстрації бізнесу. Податкова система кантону пропонує стабільні умови ведення справ та можливості для оптимізації через Patent Box та вирахування на R&D. Нижче наведено порівняльну таблицю ставок податку на прибуток по кантонах Швейцарії.'
   },
   tax_f1: {
     de: 'Steuererklärungen für Unternehmen und Privatpersonen', fr: 'Déclarations fiscales pour entreprises et particuliers', en: 'Tax returns for companies and individuals', ru: 'Налоговые декларации для компаний и физических лиц', ua: 'Податкові декларації для компаній та фізичних осіб'
@@ -568,4 +568,108 @@ const TRANSLATIONS = {
     ru: 'Заполните форму и мы свяжемся с вами в течение 24 часов.',
     ua: 'Заповніть форму і ми зв\'яжемося з вами протягом 24 годин.'
   }
+,
+  
+  // ===== COUNTRY TRANSLATIONS FOR TABLE 2 =====
+  tax_country_header: {
+    de: 'Land / Region', fr: 'Pays / Région', en: 'Country / Region', ru: 'Страна / Регион', ua: 'Країна / Регіон'
+  },
+  tax_rate_header: {
+    de: 'Gewinnsteuersatz, %', fr: 'Taux d\'impôt, %', en: 'Corporate tax rate, %', ru: 'Ставка налога на прибыль, %', ua: 'Ставка податку на прибуток, %'
+  },
+  country_switzerland_zug: {
+    de: 'Zug (Schweiz)', fr: 'Zoug (Suisse)', en: 'Zug (Switzerland)', ru: 'Цуг (Швейцария)', ua: 'Цуг (Швейцарія)'
+  },
+  country_georgia: {
+    de: 'Georgien', fr: 'Géorgie', en: 'Georgia', ru: 'Грузия', ua: 'Грузія'
+  },
+  country_lithuania: {
+    de: 'Litauen', fr: 'Lituanie', en: 'Lithuania', ru: 'Литва', ua: 'Литва'
+  },
+  country_hongkong: {
+    de: 'Hongkong', fr: 'Hong Kong', en: 'Hong Kong', ru: 'Гонконг', ua: 'Гонконг'
+  },
+  country_singapore: {
+    de: 'Singapur', fr: 'Singapour', en: 'Singapore', ru: 'Сингапур', ua: 'Сінгапур'
+  },
+  country_ukraine: {
+    de: 'Ukraine', fr: 'Ukraine', en: 'Ukraine', ru: 'Украина', ua: 'Україна'
+  },
+  country_poland: {
+    de: 'Polen', fr: 'Pologne', en: 'Poland', ru: 'Польша', ua: 'Польща'
+  },
+  country_kazakhstan: {
+    de: 'Kasachstan', fr: 'Kazakhstan', en: 'Kazakhstan', ru: 'Казахстан', ua: 'Казахстан'
+  },
+  country_czech: {
+    de: 'Tschechien', fr: 'République Tchèque', en: 'Czech Republic', ru: 'Чехия', ua: 'Чехія'
+  },
+  country_belgium: {
+    de: 'Belgien', fr: 'Belgique', en: 'Belgium', ru: 'Бельгия', ua: 'Бельгія'
+  },
+  country_spain: {
+    de: 'Spanien', fr: 'Espagne', en: 'Spain', ru: 'Испания', ua: 'Іспанія'
+  },
+  country_russia: {
+    de: 'Russland', fr: 'Russie', en: 'Russia', ru: 'Россия', ua: 'Росія'
+  },
+  country_usa: {
+    de: 'USA', fr: 'USA', en: 'USA', ru: 'США', ua: 'США'
+  },
+  country_canada: {
+    de: 'Kanada', fr: 'Canada', en: 'Canada', ru: 'Канада', ua: 'Канада'
+  },
+  country_italy: {
+    de: 'Italien', fr: 'Italie', en: 'Italy', ru: 'Италия', ua: 'Італія'
+  },
+  country_germany: {
+    de: 'Deutschland', fr: 'Allemagne', en: 'Germany', ru: 'Германия', ua: 'Німеччина'
+  },
+
+  // ===== NEW LEGAL PAGE TRANSLATIONS (SECTION 3) =====
+  legal_section3_title: {
+    de: 'Umstrukturierung und Veränderungen', fr: 'Restructuration et changements', en: 'Restructuring & Changes', ru: 'Реструктуризация и изменения', ua: 'Реструктуризація та зміни'
+  },
+  legal_section3_text: {
+    de: 'Fusionen, Übernahmen, Kapitalerhöhungen, Änderungen in der Geschäftsleitung — wir übernehmen die komplette Dokumentation und Beratung bei allen Unternehmensumstrukturierungen. Im vergangenen Jahr haben wir 8 Fälle bearbeitet.',
+    fr: 'Fusions, acquisitions, augmentations de capital, changements de direction — nous prenons en charge toute la documentation et le conseil lors de toute restructuration d\'entreprise. Nous avons traité 8 cas l\'année dernière.',
+    en: 'Mergers, acquisitions, capital increases, management changes — we handle all documentation and advisory for any corporate restructuring. We have processed 8 cases over the past year.',
+    ru: 'Слияния, поглощения, увеличение капитала, смена руководства — мы берём на себя полное документальное сопровождение и консультирование при любых корпоративных реструктуризациях. За последний год мы проработали 8 кейсов.',
+    ua: 'Злиття, поглинання, збільшення капіталу, зміна керівництва — ми беремо на себе повне документальне супроводження та консультування при будь-яких корпоративних реструктуризаціях. За останній рік ми опрацювали 8 кейсів.'
+  },
+
+  // ===== CANTONS TRANSLATIONS FOR TABLE 1 =====
+  tax_canton_header: {
+    de: 'Kanton', fr: 'Canton', en: 'Canton', ru: 'Кантон', ua: 'Кантон'
+  },
+  tax_effective_rate_header: {
+    de: 'Effektiver Gewinnsteuersatz, %', fr: 'Taux effectif d\'impôt, %', en: 'Effective corporate tax rate, %', ru: 'Эффективная ставка налога на прибыль, %', ua: 'Ефективна ставка податку на прибуток, %'
+  },
+  canton_zug: { de: 'Zug', ru: 'Цуг', en: 'Zug', ua: 'Цуг', fr: 'Zoug' },
+  canton_nidwalden: { de: 'Nidwalden', ru: 'Нидвальден', en: 'Nidwalden', ua: 'Нідвальден', fr: 'Nidwald' },
+  canton_lucerne: { de: 'Luzern', ru: 'Люцерн', en: 'Lucerne', ua: 'Люцерн', fr: 'Lucerne' },
+  canton_appenzell_ir: { de: 'Appenzell I.Rh.', ru: 'Аппенцелль-Внутренний', en: 'Appenzell I.Rh.', ua: 'Аппенцелль-Внутрішній', fr: 'Appenzell Rh.-Int.' },
+  canton_obwalden: { de: 'Obwalden', ru: 'Обвальден', en: 'Obwalden', ua: 'Обвальден', fr: 'Obwald' },
+  canton_glarus: { de: 'Glarus', ru: 'Гларус', en: 'Glarus', ua: 'Гларус', fr: 'Glaris' },
+  canton_appenzell_ar: { de: 'Appenzell A.Rh.', ru: 'Appenzell A.Rh.', ua: 'Appenzell A.Rh.', fr: 'Appenzell Rh.-Ext.' },
+  canton_basel_stadt: { de: 'Basel-Stadt', ru: 'Базель-Штадт', en: 'Basel-Stadt', ua: 'Базель-Штадт', fr: 'Bâle-Ville' },
+  canton_thurgau: { de: 'Thurgau', ru: 'Тургау', en: 'Thurgau', ua: 'Тургау', fr: 'Thurgovie' },
+  canton_graubunden: { de: 'Graubünden', ru: 'Граубюнден', en: 'Graubünden', ua: 'Граубюнден', fr: 'Grisons' },
+  canton_schaffhausen: { de: 'Schaffhausen', ru: 'Шаффхаузен', en: 'Schaffhausen', ua: 'Шаффхаузен', fr: 'Schaffhouse' },
+  canton_valais: { de: 'Wallis', ru: 'Вале', en: 'Valais', ua: 'Вале', fr: 'Valais' },
+  canton_fribourg: { de: 'Freiburg', ru: 'Фрибур', en: 'Fribourg', ua: 'Фрібур', fr: 'Fribourg' },
+  canton_vaud: { de: 'Waadt', ru: 'Во', en: 'Vaud', ua: 'Во', fr: 'Vaud' },
+  canton_schwyz: { de: 'Schwyz', ru: 'Швиц', en: 'Schwyz', ua: 'Швіц', fr: 'Schwyz' },
+  canton_uri: { de: 'Uri', ru: 'Ури', en: 'Uri', ua: 'Урі', fr: 'Uri' },
+  canton_st_gallen: { de: 'St. Gallen', ru: 'Санкт-Галлен', en: 'St. Gallen', ua: 'Санкт-Галлен', fr: 'Saint-Gall' },
+  canton_geneva: { de: 'Genf', ru: 'Женева', en: 'Geneva', ua: 'Женева', fr: 'Genève' },
+  canton_solothurn: { de: 'Solothurn', ru: 'Золотурн', en: 'Solothurn', ua: 'Золотурн', fr: 'Soleure' },
+  canton_aargau: { de: 'Aargau', ru: 'Аргау', en: 'Aargau', ua: 'Аргау', fr: 'Argovie' },
+  canton_neuchatel: { de: 'Neuenburg', ru: 'Невшатель', en: 'Neuchâtel', ua: 'Невшатель', fr: 'Neuchâtel' },
+  canton_ticino: { de: 'Tessin', ru: 'Тичино', en: 'Ticino', ua: 'Тічино', fr: 'Tessin' },
+  canton_jura: { de: 'Jura', ru: 'Юра', en: 'Jura', ua: 'Юра', fr: 'Jura' },
+  canton_basel_land: { de: 'Basel-Landschaft', ru: 'Базель-Ланд', en: 'Basel-Landschaft', ua: 'Базель-Ланд', fr: 'Bâle-Campagne' },
+  canton_zurich: { de: 'Zürich', ru: 'Цюрих', en: 'Zurich', ua: 'Цюріх', fr: 'Zurich' },
+  canton_bern: { de: 'Bern', ru: 'Берн', en: 'Bern', ua: 'Берн', fr: 'Berne' }
+
 };
