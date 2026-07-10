@@ -37,10 +37,10 @@ const TRANSLATIONS = {
     ua: 'Юридичні та бухгалтерські послуги у Швейцарії'
   },
   hero_text: {
-    de: 'Suchen Sie einen zuverlässigen Partner? Möchten Sie ein Unternehmen in der Schweiz gründen oder kaufen? Wir helfen Ihnen gerne bei Finanz-, Management- und Steuerfragen. Auf dem Markt seit Anfang 2010. Über 1000 erfolgreiche Fälle',
-    en: 'Looking for a reliable partner? Do you want to register or buy a company in Switzerland? We will be happy to help you with financial, management, and tax matters. On the market since early 2010. More than 1000 successful cases',
-    ru: 'Ищете надежного партнера? Вы хотите зарегистрировать или купить компанию в Швейцарии? Мы будем рады помочь Вам в вопросах финансового порядка, управления и налогов. На рынке с начала 2010 года. Более 1000 удачных кейсов',
-    ua: 'Шукаєте надійного партнера? Ви хочете зареєструвати чи купити компанію у Швейцарії? Мы будемо раді допомогти Вам у питаннях фінансового порядку, управління та податків. На ринку з початку 2010 року. Більше 1000 успішних кейсів'
+    de: 'Suchen Sie einen zuverlässigen Partner? Möchten Sie ein Unternehmen in der Schweiz gründen oder kaufen? Wir helfen Ihnen gerne bei Finanz-, Management- und Steuerfragen.',
+    en: 'Looking for a reliable partner? Do you want to register or buy a company in Switzerland? We will be happy to help you with financial, management, and tax matters.',
+    ru: 'Ищете надежного партнера? Вы хотите зарегистрировать или купить компанию в Швейцарии? Мы будем рады помочь Вам в вопросах финансового порядка, управления и налогов.',
+    ua: 'Шукаєте надійного партнера? Ви хочете зареєструвати чи купити компанію у Швейцарії? Мы будемо раді допомогти Вам у питаннях фінансового порядку, управління та податків.'
   },
   hero_cta: {
     de: 'Beratung anfordern', fr: 'Demander un conseil', en: 'Get Consultation', ru: 'Получить консультацию', ua: 'Отримати консультацію'
