@@ -229,18 +229,18 @@ const TRANSLATIONS = {
 
   // ===== CTA SECTION =====
   cta_title: {
-    de: 'Bereit, Ihr Unternehmen in der Schweiz zu gründen?',
-    fr: 'Prêt à créer votre entreprise en Suisse ?',
-    en: 'Ready to establish your business in Switzerland?',
-    ru: 'Готовы создать бизнес в Швейцарии?',
-    ua: 'Готові створити бізнес у Швейцарії?'
+    de: 'Benötigen Sie professionelle Unterstützung in der Schweiz?',
+    fr: 'Besoin d\'un soutien professionnel en Suisse ?',
+    en: 'Need professional support in Switzerland?',
+    ru: 'Нужна профессиональная поддержка в Швейцарии?',
+    ua: 'Потрібна професійна підтримка у Швейцарії?'
   },
   cta_text: {
-    de: 'Kontaktieren Sie uns für ein unverbindliches Erstgespräch. Wir analysieren Ihre Situation und schlagen die beste Lösung vor.',
-    fr: 'Contactez-nous pour un premier entretien sans engagement. Nous analyserons votre situation et proposerons la meilleure solution.',
-    en: 'Contact us for a free initial consultation. We will analyze your situation and propose the best solution.',
-    ru: 'Свяжитесь с нами для бесплатной первой консультации. Мы проанализируем вашу ситуацию и предложим оптимальное решение.',
-    ua: 'Зв\'яжіться з нами для безкоштовної першої консультації. Ми проаналізуємо вашу ситуацію та запропонуємо оптимальне рішення.'
+    de: 'Kontaktieren Sie uns für eine kostenlose Beratung. Wir helfen Ihnen bei Buchhaltung, Steuern und Recht.',
+    fr: 'Contactez-nous pour une consultation gratuite. Nous vous aiderons pour la comptabilité, la fiscalité et le droit.',
+    en: 'Contact us for a free consultation. We will help with accounting, taxation, and legal matters.',
+    ru: 'Свяжитесь с нами для бесплатной консультации. Мы поможем в вопросах бухгалтерии, налогообложения и права.',
+    ua: 'Зв\'яжіться з нами для безкоштовної консультації. Ми допоможемо в питаннях бухгалтерії, оподаткування та права.'
   },
   form_title: {
     de: 'Anfrage senden', fr: 'Envoyer une demande', en: 'Send Request', ru: 'Отправить заявку', ua: 'Надіслати заявку'
