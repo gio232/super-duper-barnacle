@@ -37,10 +37,10 @@ const TRANSLATIONS = {
     ua: 'Юридичні та бухгалтерські послуги у Швейцарії'
   },
   hero_text: {
-    de: 'Wir begleiten Ihr Unternehmen und unterstützen Sie bei der Firmengründung, Buchhaltung, Steuerplanung und Unternehmensführung. Auf dem Markt seit Anfang 2010.',
-    en: 'We support your business with company formation, accounting, tax planning and corporate governance. On the market since early 2010.',
-    ru: 'Мы сопровождаем ваш бизнес и помогаем в вопросах регистрации компании, бухгалтерии, налогового планирования и корпоративного управления. На рынке с начала 2010 года.',
-    ua: 'Ми супроводжуємо ваш бізнес і допомагаємо з реєстрацією компанії, бухгалтерією, податковим плануванням та корпоративним управлінням. На ринку з початку 2010 року.'
+    de: 'Suchen Sie einen zuverlässigen Partner? Möchten Sie ein Unternehmen in der Schweiz gründen oder kaufen? Wir helfen Ihnen gerne bei Finanz-, Management- und Steuerfragen. Auf dem Markt seit Anfang 2010. Über 1000 erfolgreiche Fälle',
+    en: 'Looking for a reliable partner? Do you want to register or buy a company in Switzerland? We will be happy to help you with financial, management, and tax matters. On the market since early 2010. More than 1000 successful cases',
+    ru: 'Ищете надежного партнера? Вы хотите зарегистрировать или купить компанию в Швейцарии? Мы будем рады помочь Вам в вопросах финансового порядка, управления и налогов. На рынке с начала 2010 года. Более 1000 удачных кейсов',
+    ua: 'Шукаєте надійного партнера? Ви хочете зареєструвати чи купити компанію у Швейцарії? Мы будемо раді допомогти Вам у питаннях фінансового порядку, управління та податків. На ринку з початку 2010 року. Більше 1000 успішних кейсів'
   },
   hero_cta: {
     de: 'Beratung anfordern', fr: 'Demander un conseil', en: 'Get Consultation', ru: 'Получить консультацию', ua: 'Отримати консультацію'
@@ -48,10 +48,10 @@ const TRANSLATIONS = {
 
   // ===== STATS =====
   stat_since: {
-    de: 'Auf dem Markt seit Anfang 2010',
-    en: 'On the market since early 2010',
-    ru: 'На рынке с начала 2010 года',
-    ua: 'На ринку з початку 2010 року'
+    de: 'Auf dem Markt seit Anfang 2010. Über 1000 erfolgreiche Fälle',
+    en: 'On the market since early 2010. More than 1000 successful cases',
+    ru: 'На рынке с начала 2010 года. Более 1000 удачных кейсов',
+    ua: 'На ринку з початку 2010 року. Більше 1000 успішних кейсів'
   },
 
   // ===== SERVICES SECTION =====
