@@ -139,6 +139,8 @@ app.get('/admin', (req, res) => {
 app.use((req, res) => {
   if (req.path.startsWith('/api')) {
     res.status(404).json({ success: false, message: 'API endpoint not found' });
+  } else if (req.path.match(/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|json)$/)) {
+    res.status(404).send('Not Found');
   } else {
     res.sendFile(path.join(__dirname, '../index.html'));
   }
